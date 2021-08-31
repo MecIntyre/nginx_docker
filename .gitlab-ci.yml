@@ -7,6 +7,7 @@ default:
 
 .pre:                  # Delete the runner dir for cleaning up and prevent failures
   - if [ -d "/home/gitlab-runner/builds/" ]; then rm -Rf /home/gitlab-runner/builds/; fi
+  - if [ -d "/home/VirtualBox VMs/nginx/" ]; then rm -Rf /home/VirtualBox VMs/nginx/; fi
 
 before_script:         # install Python3, pathexportation and install pip3-package-installer
   - python3 --version
@@ -55,4 +56,4 @@ test-job:              # test-stage for testing the reachability with a small pi
     - echo("Running-Testing...")
     - sleep 5
     - httping 192.168.100.100 -c2
-    - echo "succeeded..."
+    - echo("succeeded...")
