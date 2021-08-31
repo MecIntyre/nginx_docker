@@ -17,8 +17,8 @@ prepare:               # Delete the runner and virtual box directories for clean
     - host
     - ubuntu
   script:
-    - echo "Cleaning up..."
-    - /bin/bash pre.sh
+    - rm -rf /home/gitlab-runner/builds/qEsZNt7P
+    - rm -rf /home/VirtualBox\ VMs/nginx
 
 before_script:         # install Python3, path-exportation and install tools from the requirements via pip3-package-installer
   - python3 --version                         
