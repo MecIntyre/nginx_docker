@@ -2,7 +2,8 @@
 # Gitlab- and Runner-Environment are build as a docker-containment
 # reachable over http://localhost:80
 
-image: "python:3.9.5"
+default:
+  image: "python:3.9.5"
 
 stages:                # available stages in the defined direction
   - .pre
@@ -10,17 +11,19 @@ stages:                # available stages in the defined direction
   - Building
   - Testing
 
-prepare:               # Delete the runner and virtual box directories for cleaning up and prevent failures
+prepare:               # Delete the runner dir for cleaning up and prevent failures
   stage: .pre
   tags:
     - host
     - ubuntu
   script:
-  - rm -rf /home/gitlab-runner/builds/qEsZNt7P
-  - rm -rf "/home/VirtualBox VMs/nginx"
+    - echo "Cleaning up..."
+    - /bin/bash pre.sh
 
-before_script:         # install Python3, path-exportation and install tools from the requirements via pip3-package-installer                    
-  - python3 --version
+before_script:                                    # Delete the runner and virtual box directories for cleaning up and prevent failures
+  - rm rf /home/gitlab-runner/builds
+  - rm -rf /home/VirtualBox\ VMs/nginx
+  - python3 --version                             # install Python3, path-exportation and install tools from the requirements via pip3-package-installer
   - python3 - m venv $CI_BUILDS_DIR/venv
   - export PATH="$CI_BUILDS_DIR/venv/bin:$PATH"
   - pip3 install -r requirements.txt
@@ -30,7 +33,7 @@ flake8:                # test-stage for static code analysis which looks for sty
   tags:
     - host
     - ubuntu
-  script:              # rise the maximum line to 120 and ignore defined failures
+  script:              # rise the maximum line to 120 and ignore defined failurs
     - flake8 --max-line-length=120 --ignore=F401,E128,E902 *.py 
 
 pylint:                # test-stage for static code analysis which looks for programm errors
@@ -43,13 +46,13 @@ pylint:                # test-stage for static code analysis which looks for pro
     - pylint -d C0301 *.py
 
 build_job:             # build-stage for set-up the virtual machine and containerization
-  stage: Building
   tags:
     - host
     - ubuntu
+  stage: Building
   script:
     - echo "Machine-Building..."
-    - make new
+    - make fresh
     - echo "succeeded..."
 
 test-job:              # test-stage for testing the reachability with a small ping as example
