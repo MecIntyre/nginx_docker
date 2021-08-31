@@ -6,9 +6,19 @@ default:
   image: "python:3.9.5"
 
 stages:                # available stages in the defined direction
+  - .pre
   - Linting
   - Building
   - Testing
+
+prepare:               # Delete the runner and virtual box directories for cleaning up and prevent failures
+  stage: .pre
+  tags:
+    - host
+    - ubuntu
+  script:
+  - rm -rf /home/gitlab-runner/builds/qEsZNt7P
+  - rm -rf /home/VirtualBox\ VMs
 
 before_script:         # install Python3, path-exportation and install tools from the requirements via pip3-package-installer                    
   - python3 --version
@@ -53,7 +63,3 @@ test-job:              # test-stage for testing the reachability with a small pi
     - sleep 5
     - httping 192.168.100.100 -c2
     - echo("succeeded...")
-
-  after_script:         # Delete the runner and virtual box directories for cleaning up and prevent failures
-    - rm -rf /home/gitlab-runner/builds/qEsZNt7P
-    - rm -rf "/home/VirtualBox VMs"
