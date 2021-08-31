@@ -2,14 +2,17 @@
 # Gitlab- and Runner-Environment are build as a docker-containment
 # reachable over http://localhost:80
 
-image: "python:3.9.5"
+default:
+  image: "python:3.9.5"
 
-before_script:                                   # install Python3, pathexportation and install pip3-package-installer
+.pre:                  # Delete the runner dir for cleaning up and prevent failures
+  - if [ -d "/home/gitlab-runner/builds/" ]; then rm -Rf /home/gitlab-runner/builds/; fi
+
+before_script:         # install Python3, pathexportation and install pip3-package-installer
   - python3 --version
   - python3 - m venv $CI_BUILDS_DIR/venv
   - export PATH="$CI_BUILDS_DIR/venv/bin:$PATH"
   - pip3 install -r requirements.txt
-  - if [ -d "/home/gitlab-runner/builds/" ]; then rm -Rf /home/gitlab-runner/builds/; fi  # Delete the runner dir for cleaning up and prevent failures
 
 stages:                # available stages
   - Linting
