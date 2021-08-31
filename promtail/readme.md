@@ -1,0 +1,1 @@
+# Configuration-yaml for Promtail-Loki-Logging
