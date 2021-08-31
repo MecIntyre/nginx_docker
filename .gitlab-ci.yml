@@ -18,7 +18,7 @@ prepare:               # Delete the runner dir for cleaning up and prevent failu
     - ubuntu
   script:
     - echo("Cleaning up...")
-    - ./scripts/pre.sh
+    - ./pre.sh
 
 before_script:         # install Python3, path-exportation and install tools from the requirements via pip3-package-installer
   - python3 --version
