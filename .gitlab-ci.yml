@@ -48,9 +48,9 @@ build_job:             # build-stage for set-up the virtual machine and containe
     - host
     - ubuntu
   script:
-    - echo("Machine-Building...")
+    - echo"Machine-Building..."
     - make new
-    - echo("succeeded...")
+    - echo"succeeded..."
 
 test-job:              # test-stage for testing the reachability with a small ping as example
   stage: Testing
@@ -58,7 +58,7 @@ test-job:              # test-stage for testing the reachability with a small pi
     - host
     - ubuntu
   script:
-    - echo("Running-Testing...")
+    - echo"Running-Testing..."
     - sleep 5
     - httping 192.168.100.100 -c2
-    - echo("succeeded...")
+    - echo"succeeded..."
