@@ -6,6 +6,9 @@ new:
 
 clean:
 	vagrant destroy -f
+	rm -rf .vagrant
 
-fresh: clean new
-	echo "fresh färtsch"
+fresh: 
+	clean 
+	new
+	sleep 5
