@@ -44,10 +44,10 @@ pylint:                # test-stage for static code analysis which looks for pro
     - pylint -d C0301 *.py
 
 build_job:             # build-stage for set-up the virtual machine and containerization
+  stage: Building
   tags:
     - host
     - ubuntu
-  stage: Building
   script:
     - echo("Machine-Building...")
     - make fresh
