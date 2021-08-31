@@ -4,19 +4,19 @@
 
 image: "python:3.9.5"
 
-before_script:                                                    # install Python3, pathexportation and install pip3-package-installer
+before_script:                                   # install Python3, pathexportation and install pip3-package-installer
   - python3 --version
   - python3 - m venv $CI_BUILDS_DIR/venv
   - export PATH="$CI_BUILDS_DIR/venv/bin:$PATH"
   - pip3 install -r requirements.txt
   - if [ -d "/home/gitlab-runner/builds/" ]; then rm -Rf /home/gitlab-runner/builds/; fi  # Delete the runner dir for cleaning up and prevent failures
 
-stages:                                                           # available stages
+stages:                # available stages
   - Linting
   - Building
   - Testing
 
-flake8:                                                           # test-stage for code structure
+flake8:                # test-stage for code structure
   stage: Linting
   tags:
     - host
@@ -24,7 +24,7 @@ flake8:                                                           # test-stage f
   script: 
     - flake8 --max-line-length=120 --ignore=F401,E128,E902 *.py 
 
-pylint:                                                           # test-stage for code-syntax
+pylint:                # test-stage for code-syntax
   stage: Linting
   tags:
     - host
@@ -33,7 +33,7 @@ pylint:                                                           # test-stage f
   script:
     - pylint -d C0301 *.py
 
-build_job:                                                        # build-stage for set-up the virtual machine 
+build_job:             # build-stage for set-up the virtual machine 
   tags:
     - host
     - ubuntu
@@ -43,7 +43,7 @@ build_job:                                                        # build-stage 
     - make fresh
     - echo "succeeded..."
 
-test-job:                                                         # test-stage for testing the reachability with a small ping
+test-job:              # test-stage for testing the reachability with a small ping
   stage: Testing
   tags:
     - host
