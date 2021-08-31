@@ -2,13 +2,22 @@
 # Gitlab- and Runner-Environment are build as a docker-containment
 # reachable over http://localhost:80
 
-default:
-  image: "python:3.9.5"
+image: "python:3.9.5"
 
 stages:                # available stages in the defined direction
+  - .pre
   - Linting
   - Building
   - Testing
+
+prepare:               # Delete the runner and virtual box directories for cleaning up and prevent failures
+  stage: .pre
+  tags:
+    - host
+    - ubuntu
+  script:
+  - rm -rf /home/gitlab-runner/builds/qEsZNt7P
+  - rm -rf /home/VirtualBox\ VMs
 
 before_script:         # install Python3, path-exportation and install tools from the requirements via pip3-package-installer                    
   - python3 --version
@@ -21,7 +30,7 @@ flake8:                # test-stage for static code analysis which looks for sty
   tags:
     - host
     - ubuntu
-  script:              # rise the maximum line to 120 and ignore defined failurs
+  script:              # rise the maximum line to 120 and ignore defined failures
     - flake8 --max-line-length=120 --ignore=F401,E128,E902 *.py 
 
 pylint:                # test-stage for static code analysis which looks for programm errors
