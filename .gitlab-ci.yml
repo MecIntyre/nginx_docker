@@ -49,9 +49,9 @@ build_job:             # build-stage for set-up the virtual machine and containe
     - ubuntu
   stage: Building
   script:
-    - echo "Machine-Building..."
+    - echo("Machine-Building...")
     - make fresh
-    - echo "succeeded..."
+    - echo("succeeded...")
 
 test-job:              # test-stage for testing the reachability with a small ping as example
   stage: Testing
