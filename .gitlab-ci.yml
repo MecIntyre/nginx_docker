@@ -6,12 +6,16 @@ default:
   image: "python:3.9.5"
 
 stages:                # available stages in the defined direction
+  - .pre
   - Linting
   - Building
   - Testing
 
 prepare:               # Delete the runner dir for cleaning up and prevent failures
   stage: .pre
+  tags:
+    - host
+    - ubuntu
   script:             
     - if [ -d "/home/gitlab-runner/builds/" ]; then rm -Rf /home/gitlab-runner/builds/; fi
     - if [ -d "/home/VirtualBox VMs/nginx/" ]; then rm -Rf [ "/home/VirtualBox VMs/nginx/" ]; fi
