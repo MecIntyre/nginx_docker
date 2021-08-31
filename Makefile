@@ -7,6 +7,5 @@ new:
 clean:
 	vagrant destroy -f
 
-
 fresh: clean new
 	echo "fresh färtsch"
