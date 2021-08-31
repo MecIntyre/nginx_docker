@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  
+  nginx: # Webserver
+  image: nginx:latest                     # downloading latest nginx-image
+  container_name: webserver_nginx
+  ports:                                  # portbinding for the nginx-container 
+    - 80:80
+    - 443:443
+
+  prometheus: # Monitoring and collects metrics
+    image: prom/prometheus:latest                       # downloading latest prometheus-image
+    container_name: monitor_prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml # persistent volume for prometheus data-storage
+    command:
+      - '-config.file=/etc/prometheus/prometheus.yml'
+      - '-storage.local.path=/prometheus'
+      - '-alertmanager.url=http://alertmanager:9093'
+    expose:
+      - 9090
+    ports:                                              # portbinding for the prometheus-container
+      - 9090:9090
+    links:
+      - cadvisor:cadvisor                               # linking with cadvisor
+      - node-exporter:node-exporter                     # linking with exporter
+      - grafana:grafana                                 # linking with grafana
+
+  node-exporter: # host metrics collector
+    image: prom/node-exporter:latest                    # downloading latest node-exporter-image
+    container_name: monitor_node_exporter
+    restart: unless-stopped
+    expose:                                             # portbinding for the exporter-container
+      - 9100
+
+  cadvisor: # containers metrics collector
+    image: google/cadvisor:latest                       # downloading latest cadvisor-image
+    container_name: monitor_cadvisor
+    restart: unless-stopped
+    volumes:                                            # define persistent volumes for data storage
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    expose:                                             # portbinding for the cadvisor-container
+      - 8080
+
+  grafana: # Monitoring-Dashboard
+    image: grafana/grafana:latest               # downloading latest grafana-image
+    container_name: monitor_grafana
+    restart: unless-stopped
+    volumes:
+      - ./data/grafana:/var/lib/grafana     # persistent volume for grafana data-storage
+    ports:                                  # portbinding for the grafana-container
+      - 3000:3000
