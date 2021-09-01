@@ -5,11 +5,15 @@
 default:
   image: "python:3.9.5"
 
+services:
+  - docker:dind
+
 stages:                # available stages in the defined direction
   - .pre
   - Linting
   - Building
   - Testing
+  - Deployment
 
 prepare:               # Delete the runner and virtual box directories for cleaning up and prevent failures
   stage: .pre
@@ -63,3 +67,14 @@ test-job:              # test-stage for testing the reachability with a small pi
     - sleep 5
     - httping 192.168.100.100 -c2
     - echo "succeeded..."
+
+deploy-job:              # deployment-stage for release the complete build on docker-hub (mecintyre)
+  stage: Deployment
+  tags:
+    - host
+    - ubuntu
+  script:
+    - echo $CI_JOB_ID
+    - echo $DH_PASSWORD | docker login --username $DH_USERNAME --password-stdin
+    - docker build -t $DH_USERNAME/gitlabbuild:$CI_JOB_ID .
+    - docker push $DH_USERNAME/gitlabbuild:$CI_JOB_ID
