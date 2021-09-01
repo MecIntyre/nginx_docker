@@ -5,9 +5,6 @@
 default:
   image: "python:3.9.5"
 
-services:
-  - docker:dind
-
 stages:                # available stages in the defined direction
   - .pre
   - Linting
@@ -21,7 +18,7 @@ prepare:               # Delete the runner and virtual box directories for clean
     - host
     - ubuntu
   script:
-    - rm -rf /home/gitlab-runner/builds/qEsZNt7P && rm -rf /home/gitlab-runner/VirtualBox\ VMs/nginx
+    - rm -rf /home/gitlab-runner/builds/ && rm -rf /home/gitlab-runner/VirtualBox\ VMs/
 
 before_script:         # install Python3, path-exportation and install tools from the requirements via pip3-package-installer
   - python3 --version                         
@@ -68,13 +65,25 @@ test-job:              # test-stage for testing the reachability with a small pi
     - echo "succeeded..."
 
 deploy-job:              # deployment-stage for release the complete build on docker-hub (mecintyre)
+  image: docker:latest
   stage: Deployment
   tags:
     - host
     - ubuntu
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$DH_USERNAME" -p "$DH_PASSWORD"
   script:
-    - echo $CI_JOB_ID
-    - echo $DH_PASSWORD | docker login --username $DH_USERNAME --password-stdin
-    - docker build -t $DH_USERNAME/gitlabbuild:$CI_JOB_ID .
-    - docker push $DH_USERNAME/gitlabbuild:$CI_JOB_ID
+    -|
+     if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+       tag=""
+       echo "Running on default branch '$CI_DEFAULT_BRANCH'; tag = 'latest'"
+     fi
+    - docker build -t "$DH_USERNAME{tag}"" .
+    - docker push "$DH_USERNAME{tag}
+  rules:
+    - if: $CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH
+      changes:
+        - www/*
   
