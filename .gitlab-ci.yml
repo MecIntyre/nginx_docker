@@ -81,4 +81,5 @@ deploy-job:              # deployment-stage for release the complete build on do
         echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
       fi
     - docker build -t "$CI_REGISTRY_IMAGE${tag}" .
+    - echo "$CI_REGISTRY_IMAGE${tag}"
     - docker push "$CI_REGISTRY_IMAGE${tag}"
