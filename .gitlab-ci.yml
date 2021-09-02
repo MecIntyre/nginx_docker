@@ -65,7 +65,7 @@ test-job:              # test-stage for testing the reachability with a small pi
     - echo "succeeded..."
 
 deploy-job:              # deployment-stage for release the complete build on docker-hub (mecintyre)
-  image: docker:latest
+  image: docker
   stage: Deployment
   tags:
     - host
