@@ -6,6 +6,7 @@ COPY .html/*.* /usr/share/nginx/html/.
 COPY .conf/*.* /etc/nginx/.
 COPY .prometheus/*.* /etc/prometheus/rules/.
 
+# Portdefinition
 EXPOSE 80
 EXPOSE 443
 CMD ["nginx","-g","daemon off;"]
