@@ -82,7 +82,3 @@ deploy-job:              # deployment-stage for release the complete build on do
       fi
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
-  rules:
-    - if: $CI_COMMIT_BRANCH
-      exists:
-        - Dockerfile
