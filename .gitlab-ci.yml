@@ -72,6 +72,8 @@ deploy-job:              # deployment-stage for release the complete build on do
     - ubuntu
   services:
     - docker:dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
   script:
     - |
       docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
