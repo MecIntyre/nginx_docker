@@ -82,9 +82,9 @@ deploy-job:              # deployment-stage for release the complete build on do
       fi
     - docker build -t "$CI_REGISTRY_IMAGE${tag}" .
     - docker push "$CI_REGISTRY_IMAGE${tag}
+  # check docker hub for changes as condition
   rules:
-    - if: $CI_COMMIT_BRANCH
-      exists:
-        - Dockerfile
-
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - www/*
   
