@@ -15,7 +15,8 @@ stages:                # available stages in the defined direction
 prepare:               # Delete the runner and virtual box directories for cleaning up and prevent failures
   stage: .pre
   tags:
-    - host
+    - docker
+    - linux
     - ubuntu
   script:
     - rm -rf /home/gitlab-runner/builds/ && rm -rf /home/gitlab-runner/VirtualBox\ VMs/
@@ -29,7 +30,8 @@ before_script:         # install Python3, path-exportation and install tools fro
 flake8:                # test-stage for static code analysis which looks for style and syntax
   stage: Linting
   tags:
-    - host
+    - docker
+    - linux
     - ubuntu
   script:              # rise the maximum line to 120 and ignore defined failurs
     - flake8 --max-line-length=120 --ignore=F401,E128,E902 *.py 
@@ -37,7 +39,8 @@ flake8:                # test-stage for static code analysis which looks for sty
 pylint:                # test-stage for static code analysis which looks for programm errors
   stage: Linting
   tags:
-    - host
+    - docker
+    - linux
     - ubuntu
   allow_failure: true
   script:
@@ -45,7 +48,8 @@ pylint:                # test-stage for static code analysis which looks for pro
 
 build_job:             # build-stage for set-up the virtual machine and containerization
   tags:
-    - host
+    - docker
+    - linux
     - ubuntu
   stage: Building
   script:
@@ -56,7 +60,8 @@ build_job:             # build-stage for set-up the virtual machine and containe
 test-job:              # test-stage for testing the reachability with a small ping as example
   stage: Testing
   tags:
-    - host
+    - docker
+    - linux
     - ubuntu
   script:
     - echo "Running-Testing..."
@@ -68,7 +73,8 @@ deploy-job:              # deployment-stage for release the complete build on do
   image: docker
   stage: Deployment
   tags:
-    - host
+    - docker
+    - linux
     - ubuntu
   services:
     - docker:dind
