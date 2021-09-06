@@ -47,7 +47,7 @@ pylint:                # test-stage for static code analysis which looks for pro
     - pylint -d C0301 --ignore=F0001 *.py
 
 build_job:             # build-stage for set-up the virtual machine and containerization
-  image: nineseconds/docker-vagrant-python
+  image: rankinjl/vagrant-docker-python-ubuntu
   tags:
     - docker
     - linux
