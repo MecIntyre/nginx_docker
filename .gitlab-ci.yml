@@ -3,7 +3,7 @@
 # reachable over http://localhost:80
 
 default:
-  image: "python:3.9.5"
+  image: mecintyre/nginxwebserver
 
 stages:                # available stages in the defined direction
   - .pre
@@ -47,7 +47,6 @@ pylint:                # test-stage for static code analysis which looks for pro
     - pylint -d C0301 --ignore=F0001 *.py
 
 build_job:             # build-stage for set-up the virtual machine and containerization
-  image: rankinjl/vagrant-docker-python-ubuntu
   tags:
     - docker
     - linux
