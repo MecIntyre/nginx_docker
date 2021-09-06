@@ -54,7 +54,7 @@ build_job:             # build-stage for set-up the virtual machine and containe
   stage: Building
   script:
     - echo "Machine-Building..."
-    - make new
+    - vagrant up
     - echo "succeeded..."
 
 test-job:              # test-stage for testing the reachability with a small ping as example
