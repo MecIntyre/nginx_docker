@@ -1,11 +1,11 @@
 # Makefile for easier and semi-automated operations
 
 new:
-	/usr/bin/vagrant up
-	/usr/bin/vagrant reload
+	/usr/bin/vagrant/ vagrant up
+	/usr/bin/vagrant/ vagrant reload
 
 clean:
-	/usr/bin/vagrant destroy -f
+	/usr/bin/vagrant/ vagrant destroy -f
 	rm -rf .vagrant
 
 fresh: 
