@@ -52,18 +52,20 @@ pylint:                # test-stage for static code analysis which looks for pro
 
 build_job:             # build-stage for set-up the virtual machine and containerization
   stage: Building
+  image: docker:dind
   tags:
     - docker
     - linux
     - ubuntu
+  services:
+    - docker:dind
+  before_script:
+    - sudo apt install ruby -y
   script:
     - python3 --version
-    - |
-      curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-      apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-      apt-get update && sudo apt-get install vagrant y-
     - echo "Machine-Building..."
-    - vagrant up
+    - apk add --no-cache docker-compose
+    - vagrant up -d
     - echo "succeeded..."
 
 test-job:              # test-stage for testing the reachability with a small ping as example
