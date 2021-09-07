@@ -60,11 +60,10 @@ build_job:             # build-stage for set-up the virtual machine and containe
   services:
     - docker:dind
   before_script:
-    - sudo apt install ruby -y
-  script:
+    - apt install ruby -y
     - python3 --version
+  script:
     - echo "Machine-Building..."
-    - apk add --no-cache docker-compose
     - vagrant up -d
     - echo "succeeded..."
 
