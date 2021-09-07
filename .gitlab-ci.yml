@@ -59,9 +59,6 @@ build_job:             # build-stage for set-up the virtual machine and containe
     - ubuntu
   services:
     - docker:dind
-  before_script:
-    - apt install ruby -y
-    - python3 --version
   script:
     - echo "Machine-Building..."
     - vagrant up -d
@@ -81,7 +78,7 @@ test-job:              # test-stage for testing the reachability with a small pi
 
 deploy-job:              # deployment-stage for release the complete build on docker-hub (mecintyre)
   stage: Deployment
-  image: docker
+  image: docker:dind
   tags:
     - docker
     - linux
