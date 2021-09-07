@@ -52,16 +52,18 @@ pylint:                # test-stage for static code analysis which looks for pro
 
 build_job:             # build-stage for set-up the virtual machine and containerization
   stage: Building
-  image: docker:dind
+  image: docker
   tags:
     - docker
     - linux
     - ubuntu
   services:
-    - docker:dind
+    - docker
+  before_script:
+    - python3 --version
   script:
     - echo "Machine-Building..."
-    - vagrant up -d
+    - make new
     - echo "succeeded..."
 
 test-job:              # test-stage for testing the reachability with a small ping as example
