@@ -52,7 +52,6 @@ pylint:                # test-stage for static code analysis which looks for pro
 
 build_job:             # build-stage for set-up the virtual machine and containerization
   stage: Building
-  image: mecintyre/nginxwebserver
   tags:
     - docker
     - linux
